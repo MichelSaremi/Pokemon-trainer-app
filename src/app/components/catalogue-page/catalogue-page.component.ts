@@ -6,6 +6,7 @@ import { PokeAPIService, Pokemon } from 'src/app/services/pokeapi.service';
 import { LoginService } from 'src/app/services/login.service';
 import { CatalogueService } from 'src/app/services/catalogue.service';
 import { __values } from 'tslib';
+import { Login } from 'src/app/models/login.model';
 
 
 @Component({
@@ -19,7 +20,9 @@ export class CataloguePageComponent implements OnInit {
   // @Output() complete: EventEmitter<number> = new EventEmitter();
   title: string = "Catalogue";
   username: string = "Set user here";
-
+  userId: number|string = '';
+  public users: Login[] | undefined;
+  
   url = ''
   pokemons: Array<Pokemon> | null | string | undefined | string[] | any = [];
   pokemonsID: Array<Pokemon> | null | string | undefined | string[] | any = [];
@@ -30,9 +33,15 @@ export class CataloguePageComponent implements OnInit {
 
 
   ngOnInit(): void {
+    if(sessionStorage.getItem('current-user') != null){
+      let current_user = JSON.parse(sessionStorage.getItem('current-user') || '{}');
+      this.username = current_user[0].username
+      this.userId = current_user[0].id
+      console.log(this.userId)
+    }
 
-    if (sessionStorage.getItem('pokemons') != null) {
-      const pokemons: { name: string, url: string }[] | string | null = sessionStorage.getItem('pokemons')
+    if (localStorage.getItem('pokemons') != null) {
+      const pokemons: { name: string, url: string }[] | string | null = localStorage.getItem('pokemons')
       this.pokemons = pokemons
       this.pokemons = JSON.parse(this.pokemons)
       //console.log("all pokemons from catalogue")
@@ -43,15 +52,15 @@ export class CataloguePageComponent implements OnInit {
         //console.log(id.url)
 
          let id2 = (id.url.toString().split('/',7))[6]
-         console.log((id.url.toString().split('/',7))[6])
+         //console.log((id.url.toString().split('/',7))[6])
          this.pokemonsID.push(id2)
 
       }
-      sessionStorage.setItem("pokemonsID", this.pokemonsID)
+      localStorage.setItem("pokemonsID", this.pokemonsID)
 
 
       for(let id of this.pokemonsID){
-        console.log(id)
+        //console.log(id)
          this.Avatars.push(this.pokemonService.getAvatars(id))
 
 
@@ -75,16 +84,26 @@ export class CataloguePageComponent implements OnInit {
     this.router.navigateByUrl('/login');
   }
 
-  onChange() {
+  onChange(){
     let i = $("select[name='select'] option:selected").index();
     this.url = this.Avatars[i];
-    console.log(this.url)
+    //console.log(this.url)
   }
   onChooseButton() {
-    const user: string | null | any = localStorage.getItem("current-user")
-    let i = $("select[name='select'] option:selected").index();
-    this.catalogueService.getPokeList("ash", this.pokemons[i].name)
-    this.catalogueService.updatePokeList("ash")
 
+    console.log("Running code after button pressed")
+
+    const user: string | null | any = sessionStorage.getItem("current-user")
+    let i = $("select[name='select'] option:selected").index();
+    
+    this.catalogueService.userAPIUpdate(this.username,this.userId, this.pokemons[i].name)
+  
+    this.loginService.queryUser(this.username).subscribe((res: Login[]) => {
+        this.users = res;
+        sessionStorage.setItem("current-user", JSON.stringify(this.users));
+    })
+  }
+  onNavigate(){
+    this.router.navigateByUrl('/trainer');
   }
 }//npm i --save-dev @types/jquery

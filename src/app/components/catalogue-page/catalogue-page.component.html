@@ -2,7 +2,7 @@
   <div class="row">
     <div class=card>
       <h1>{{title}}</h1>
-        <button id="btn-login" type="form-control" (click)="onLogout()" class="btn">Logout</button>
+        
       <h2>{{username}}</h2>
       <div>
         <img [src]="url" height="300px"> <br/>
@@ -13,6 +13,8 @@
         </select>
       </div>
       <button id="btn-choose"  (click)="onChooseButton()" class="btnChoose"> Collect pokemon!</button>
+      <button id="btn-login" type="form-control" (click)="onNavigate()" class="btn">Go back to training!</button>
+      <button id="btn-login" type="form-control" (click)="onLogout()" class="btn">Logout</button>   
     </div>
   </div>
 </header>

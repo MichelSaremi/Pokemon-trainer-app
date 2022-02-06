@@ -36,8 +36,8 @@ export class LoginPageComponent implements OnInit {
           this.pokemons.push(p)
         }
 
-        if (sessionStorage.getItem('pokemons') == null) {
-          sessionStorage.setItem('pokemons', JSON.stringify(this.pokemons));
+        if (localStorage.getItem('pokemons') == null) {
+          localStorage.setItem('pokemons', JSON.stringify(this.pokemons));
         }
         else {
           console.log("Pokemons are already set in local storage")
@@ -57,18 +57,21 @@ export class LoginPageComponent implements OnInit {
   }
 
   onNavigate() {
+    //---search for user
+    //---if none is found add to api
     this.loginService.queryUser(this.username).subscribe((res: Login[]) => {
       if (res.length == 0) {
         this.loginService.setUserToApi(this.username).subscribe((res: Login[]) => {
-          localStorage.setItem("current-user", JSON.stringify([res]))
+          sessionStorage.setItem("current-user", JSON.stringify([res]))
           console.log("----User set to API-----")
           return
         })
       }
       else {
+        //---if found register
         this.users = res
         this.username = this.users[0].username
-        localStorage.setItem("current-user", JSON.stringify(this.users))
+        sessionStorage.setItem("current-user", JSON.stringify(this.users))
         console.log("----User query found -----")
         return
       }
