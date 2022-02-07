@@ -3,23 +3,18 @@
     <div class=card>
       <h1>{{title}}</h1>
       <h1>{{username}}</h1>
-      
-      <button id="btn-login" type="form-control" (click)="onNavigate()" class="btn">Go collect!</button>
-    
       <h2>The pokemons you have collected</h2>
       <ul>
         <li *ngFor="let pokemon of user_pokemons; let i = index" >{{pokemon}}
           <img [src]=Avatars[i] height="100px">
         </li>>
       </ul>
+      <button id="btn-login" type="form-control" (click)="onNavigate()" class="btn">Go collect!</button>
 
 
       <div class = "cardItemColumn">
         
-
       </div>  
-
-
     </div>
   </div>
 </header>

@@ -10,6 +10,20 @@ body {
   font-family: 'Poppins', sans-serif;
 }
 
+.div_top_hypers {
+  background-color:#eeeeee;
+  display:inline;
+}
+
+.ul_top_hypers li{
+  display: inline;
+}
+
+
+input {
+    margin: .4rem;
+}
+
 .container {
   max-width: 500px;
   margin: 30px auto;

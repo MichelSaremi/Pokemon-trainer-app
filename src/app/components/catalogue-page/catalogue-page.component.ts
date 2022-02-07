@@ -24,15 +24,17 @@ export class CataloguePageComponent implements OnInit {
   public users: Login[] | undefined;
   
   url = ''
-  pokemons: Array<Pokemon> | null | string | undefined | string[] | any = [];
-  pokemonsID: Array<Pokemon> | null | string | undefined | string[] | any = [];
-  Avatars: Array<ImageBitmap> | any | null | undefined | ((error: any) => void) = []
-  //private readonly pokemons$: BehaviorSubject<Pokemon[]> = new BehaviorSubject<Pokemon[]>();
+  pokemons: string[] | any = [];
+  pokemonsID: string[] | any = [];
+  Avatars:  any = []
+
 
   constructor(private readonly loginService: LoginService, private readonly pokemonService: PokeAPIService, private readonly catalogueService: CatalogueService, private router: Router) { }
 
 
   ngOnInit(): void {
+
+    //---If user exists -> load user
     if(sessionStorage.getItem('current-user') != null){
       let current_user = JSON.parse(sessionStorage.getItem('current-user') || '{}');
       this.username = current_user[0].username
@@ -40,69 +42,53 @@ export class CataloguePageComponent implements OnInit {
       console.log(this.userId)
     }
 
-    if (localStorage.getItem('pokemons') != null) {
-      const pokemons: { name: string, url: string }[] | string | null = localStorage.getItem('pokemons')
+    //---If pokemons loaded into local storage -> retreive
+    if (sessionStorage.getItem('pokemons') != null) {
+      const pokemons: { name: string, url: string }[] | string | null = sessionStorage.getItem('pokemons')
       this.pokemons = pokemons
       this.pokemons = JSON.parse(this.pokemons)
-      //console.log("all pokemons from catalogue")
-      //console.log(this.pokemons)
 
-
+      //--- extract id's from pokemon url's
       for (let id of this.pokemons) {
-        //console.log(id.url)
-
          let id2 = (id.url.toString().split('/',7))[6]
-         //console.log((id.url.toString().split('/',7))[6])
          this.pokemonsID.push(id2)
 
       }
-      localStorage.setItem("pokemonsID", this.pokemonsID)
+      //--- put all id's in local storage
+      sessionStorage.setItem("pokemonsID", JSON.stringify(this.pokemonsID))
 
-
+      //--- Generate urls for each avatar image 
       for(let id of this.pokemonsID){
-        //console.log(id)
+
          this.Avatars.push(this.pokemonService.getAvatars(id))
-
-
       }
-      // for (let i=0;i<this.Avatars.length; i++){
-      //   console.log(this.Avatars[i])
-      // }
 
-      // for(let i =0; i<this.pokemons.length; i++){
-      //   https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png
-      // }
 
     } else {
       console.log("no pokemons")
     }
   }
-  //Must add more functionality here
+  //---clear all on logout
   onLogout(){
     localStorage.clear()
     sessionStorage.clear()
     this.router.navigateByUrl('/login');
   }
 
+  //---when picking pokemon from dropdown-list display repctive image
   onChange(){
     let i = $("select[name='select'] option:selected").index();
     this.url = this.Avatars[i];
-    //console.log(this.url)
   }
+
+  //---when choose button pushed update user pokemon at API and set at sessionstorage 
   onChooseButton() {
-
-    console.log("Running code after button pressed")
-
-    const user: string | null | any = sessionStorage.getItem("current-user")
+    
     let i = $("select[name='select'] option:selected").index();
     
     this.catalogueService.userAPIUpdate(this.username,this.userId, this.pokemons[i].name)
-  
-    this.loginService.queryUser(this.username).subscribe((res: Login[]) => {
-        this.users = res;
-        sessionStorage.setItem("current-user", JSON.stringify(this.users));
-    })
   }
+  
   onNavigate(){
     this.router.navigateByUrl('/trainer');
   }

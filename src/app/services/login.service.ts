@@ -34,12 +34,24 @@ export class LoginService{
   }
 
 
-  public deleteSelectedUserPokemon(pokemon:string, username:string, id:string): void {
+  public deleteSelectedUserPokemon(pokemon:string[], id:string): void {
+    console.log("ok dude")
     const headers = { 'X-API-Key': this.apiKEY, 'Content-Type': 'application/json' };
-    this.http.delete(`${this.apiURL}/trainers?username=${username}`, { headers })
-        .subscribe(() => this.status = 'Delete successful');
-  }
+    const body = {pokemon: pokemon};
 
+    this.http.patch<Login[]>(`${this.apiURL}/trainers/${id}`, JSON.stringify(body), {'headers':headers}).subscribe({
+      next: data => {
+        sessionStorage.getItem("pokemons") || '{}'
+        let user = JSON.parse(sessionStorage.getItem('current-user' ) || '{}');
+        user = data
+        sessionStorage.setItem("current-user", JSON.stringify([user]));
+      },
+      error: error => {
+          this.error = error.message;
+          console.error('There was an error!', error);
+      }
+  })
+  }
 
   public isLoggedIn(){
       return this.isLoggedIn;
@@ -49,47 +61,6 @@ export class LoginService{
   public getUser(): Login[]{
     return this.user
   }
-
-
-  /*public query(username:string): Observable<Login[]> {
-
-    console.log("Above")
-    console.log(this.http.get<Login[]>(`${this.apiURL}/trainers?username=${username}`));
-    return this.http.get<Login[]>(`${this.apiURL}/trainers?username=${username}`)
-
-  }
-  //--explain
-  public queryRequestUser(username:string): void{
-    this.http.get<Login[]>(`${this.apiURL}/trainers?username=${username}`).subscribe({
-      next: data => {
-        console.log(data);
-        this.user = data
-      },
-      error: error => {
-          this.error = error.message;
-          console.error('There was an error!', error);
-      }
-  })
-  }
-  //---save user to API
-  public setUserToApi(username:string): void {
-    const headers = { 'X-API-Key': this.apiKEY, 'Content-Type': 'application/json' };
-    const body = { username: username, pokemon: []};
-
-    this.http.post<Login[]>(`${this.apiURL}/trainers?username=${username}`, body, { headers }).subscribe({
-        next: data => {
-          this.user = data; //What is happening here
-        },
-        error: error => {
-          this.error = error.message;
-          console.error('There was an error!', error);
-        }
-    })
-  }
-
-  public setUser(user:Login[]){
-    this.user = user;
-  }*/
 
 
 }

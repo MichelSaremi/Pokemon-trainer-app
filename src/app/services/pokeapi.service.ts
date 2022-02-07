@@ -48,8 +48,7 @@ export class PokeAPIService {
       );
   }
   public getAvatars(index: string){
-    
     return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`
-    
+
   }
 }
