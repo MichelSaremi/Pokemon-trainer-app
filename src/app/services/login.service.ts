@@ -20,10 +20,12 @@ export class LoginService{
   constructor(public readonly http: HttpClient){
   }
 
+  //---check for user
   public queryUser(username:string): Observable<Login[]> {
     return this.http.get<Login[]>(`${this.apiURL}/trainers?username=${username}`)
   }
 
+  //---register users
   public setUserToApi(username:string): Observable<Login[]> {
     const headers = { 'X-API-Key': this.apiKey, 'Content-Type': 'application/json' };
     const body = {username: username, pokemon: []};

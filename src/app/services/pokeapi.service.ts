@@ -23,24 +23,11 @@ export class PokeAPIService {
   apiURL = 'https://ms-oh-trivia-api.herokuapp.com'
   apiKey = 'hezgdhzet5jkiuztge67zshhezgdhzet5jkiuztge67zshhezgdhzet5jkiuztge'
 
-  //---get pokemons and push to array
   constructor(private http: HttpClient) {
-    this.getListOfPokemonUrls().subscribe(
-      (results: Array<Pokemon>) => {
-        for(let p of results) {
-          this.pokemons.push(p)
-        }
-      }
-    )
-  }
-  //---get list of pokemons
-  public get_pokemons(): Array<Pokemon> {
-    return this.pokemons
   }
 
-
-  //---get list of pokemons URLS
-  public getListOfPokemonUrls(): Observable<Array<Pokemon>> {
+  //---get list of pokemons, each has name and url
+  public getListOfPokemons(): Observable<Array<Pokemon>> {
 
     return this.http.get<any>(POKEAPI_URL)
       .pipe(
@@ -49,22 +36,21 @@ export class PokeAPIService {
         )
       );
   }
+  //---used to gererate Aavatar image url
   public getAvatars(index: string){
     return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${index}.png`
 
   }
+  //---remove pokemon from API
   public removeAPIUpdate(username: string, userID: number|string, pokemonRemove: string) {
     
     //---fetch user list
     let user_pokemons = JSON.parse(sessionStorage.getItem("user-pokelist") || '{}')
     
     //---remove pokemon from list
-    console.log("pokemon clicked")
-    console.log(pokemonRemove)
     let index = user_pokemons.indexOf(pokemonRemove, 0)
     user_pokemons.splice(index,1); 
-    console.log("upokemons after delete")
-    console.log(user_pokemons)  
+     
       
         //---replace user API list with local list
         const url = `${this.apiURL}/trainers/${userID}`;

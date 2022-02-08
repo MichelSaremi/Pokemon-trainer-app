@@ -20,7 +20,7 @@ export class CatalogueService{
   constructor(public readonly http: HttpClient){
   }
 
-
+//---update user pokemon list
 public userAPIUpdate(username: string, userID: number|string, pokemonAdd: string) {
     
     //---empty pokelist
@@ -34,9 +34,7 @@ public userAPIUpdate(username: string, userID: number|string, pokemonAdd: string
     .subscribe(
     (results: any )=> {
         
-        //this.userId = results[0].id
-        console.log("user id")
-        console.log(this.userId)
+        
         //---if doesnt exist ad user choise to list
         if(results[0].pokemon.length == 0){
             pokelist.push(pokemonAdd)

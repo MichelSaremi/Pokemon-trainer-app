@@ -27,7 +27,7 @@ export class LoginPageComponent implements OnInit {
   ngOnInit(): void {
 
     //---get pokemonlist from API
-    this.pokemonService.getListOfPokemonUrls().subscribe(
+    this.pokemonService.getListOfPokemons().subscribe(
       (results: Array<Pokemon>) => {
         for (let p of results) {
           this.pokemons.push(p)
@@ -65,7 +65,7 @@ export class LoginPageComponent implements OnInit {
 
   onNavigate() {
     //---search for user
-    //---if none is found -> add to api
+    //---if none is found -> add to api and register in local storage
     this.loginService.queryUser(this.username).subscribe((res: Login[]) => {
       if (res.length == 0) {
         this.loginService.setUserToApi(this.username).subscribe((res: Login[]) => {
@@ -74,7 +74,7 @@ export class LoginPageComponent implements OnInit {
         })
       }
       else {
-        //---if found register in local storage
+        //---if found -> register in local storage
         this.users = res
         localStorage.setItem("current-user", JSON.stringify(this.users))
         this.catalogueService.getUserPokeList(this.username)

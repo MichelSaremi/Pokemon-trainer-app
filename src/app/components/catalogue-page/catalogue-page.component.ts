@@ -109,14 +109,14 @@ export class CataloguePageComponent implements OnInit {
 
     
   }
-  
+  //---take you to trainer
   onNavigate(){
     this.router.navigateByUrl('/trainer');
   }
-
+  //---reload catalogue page
   reloadComponent() {
     this.router.routeReuseStrategy.shouldReuseRoute = () => false;
     this.router.onSameUrlNavigation = 'reload';
     this.router.navigate(['/catalogue']);
 }
-}//npm i --save-dev @types/jquery
+}
