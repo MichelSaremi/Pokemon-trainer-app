@@ -16,7 +16,9 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 ## Dependensies
 npm i jquery --save
+
 npm i @types/jquery -D
+
 import * as $ from 'jquery'
 
 ## Running unit tests
