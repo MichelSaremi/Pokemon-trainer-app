@@ -62,8 +62,6 @@ export class CataloguePageComponent implements OnInit {
          this.pokemonsID.push(id2)
 
       }
-      //--- retreive user pokemons
-      this.user_pokemons = JSON.parse(sessionStorage.getItem("user-pokelist") || '{}')
 
       //--- put all id's in storage
       sessionStorage.setItem("pokemonsID", JSON.stringify(this.pokemonsID))
@@ -94,13 +92,14 @@ export class CataloguePageComponent implements OnInit {
 
   //---when choose button pushed update user pokemon at API and set at sessionstorage 
   onChooseButton() {
+    this.user_pokemons = JSON.parse(sessionStorage.getItem("user-pokelist") || '{}')
     
     let i = $("select[name='select'] option:selected").index();
-    
+
     this.catalogueService.userAPIUpdate(this.username,this.userId, this.pokemons[i-1].name)
     
     //---Text appears depending on if you have pokemon or not
-    if (this.user_pokemons?.includes(this.pokemons_names[i-1])){
+    if (this.user_pokemons?.includes(this.pokemons_names[i])){
       this.choosen="You have allready collected this pokemon"
       this.chooseimg='/assets/images/pokeball.png'
     }else{
@@ -108,6 +107,7 @@ export class CataloguePageComponent implements OnInit {
       this.chooseimg=''
     }
 
+    
   }
   
   onNavigate(){

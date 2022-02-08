@@ -29,8 +29,6 @@ export class TrainerPageComponent implements OnInit {
       this.username = current_user[0].username
       this.user_id = current_user[0].id
 
-      //this.catalogueService.getUserList(this.username)
-
       this.user_pokemons = JSON.parse(sessionStorage.getItem("user-pokelist") || '{}')
       console.log(this.user_pokemons)
       this.pokemons = JSON.parse(sessionStorage.getItem("pokemons") || '{}')
