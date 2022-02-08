@@ -1,20 +1,29 @@
-<header class="header">
-  <div class="row">
-    <div class=card>
-      <h1>{{title}}</h1>
-      <h1>{{username}}</h1>
-      <h2>The pokemons you have collected</h2>
-      <ul>
-        <li *ngFor="let pokemon of user_pokemons; let i = index" >{{pokemon}}
-          <img [src]=Avatars[i] height="100px">
-        </li>>
-      </ul>
-      <button id="btn-login" type="form-control" (click)="onNavigate()" class="btn">Go collect!</button>
+<div class="main">
+    
+  <h1>Trainer page</h1>
+  <h2>For trainer {{username}}</h2>
+  <h3>The pokemons you have collected</h3>
 
+  <ul class="display">
+    <li *ngFor="let pokemon of user_pokemons; let i = index" >
+      {{pokemon}}
+      <img [src]=Avatars[i] height="100px">
+      </li>>
+  </ul>
 
-      <div class = "cardItemColumn">
-        
-      </div>  
-    </div>
-  </div>
-</header>
+<div class="select">
+  <h2>Select pokemon from dropdownlist to remove</h2>
+  <select class="option" name="select">
+      <option *ngFor="let pokemon of user_pokemons; let i = index" >
+       {{pokemon}}
+      </option>
+  </select> 
+  <button id="btn-choose"  (click)="onDeleteButton()" class="btn">Remove pokemon!</button>
+</div>
+
+<div class="collect">
+<button id="btn-collect" type="form-control" (click)="onNavigate()" class="btn">Go collect!</button>
+<button id="btn-collect" type="form-control" (click)="onLogout()" class="btn">Logout!</button>
+</div>
+
+</div>

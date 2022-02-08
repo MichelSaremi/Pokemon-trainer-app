@@ -16,45 +16,55 @@ import { Login } from 'src/app/models/login.model';
 })
 export class CataloguePageComponent implements OnInit {
 
-  // @Input() Avatar?: Avatar;
-  // @Output() complete: EventEmitter<number> = new EventEmitter();
-  title: string = "Catalogue";
   username: string = "Set user here";
   userId: number|string = '';
   public users: Login[] | undefined;
+  user_pokemons: string[] | undefined;
   
   url = ''
+  chooseimg = ''
   pokemons: string[] | any = [];
+  pokemons_names: string[] = [];
   pokemonsID: string[] | any = [];
-  Avatars:  any = []
-
+  Avatars:  any = [];
+  choosen: string = '';
 
   constructor(private readonly loginService: LoginService, private readonly pokemonService: PokeAPIService, private readonly catalogueService: CatalogueService, private router: Router) { }
 
 
   ngOnInit(): void {
 
+
     //---If user exists -> load user
-    if(sessionStorage.getItem('current-user') != null){
-      let current_user = JSON.parse(sessionStorage.getItem('current-user') || '{}');
+    if(localStorage.getItem('current-user') != null){
+      let current_user = JSON.parse(localStorage.getItem('current-user') || '{}');
       this.username = current_user[0].username
       this.userId = current_user[0].id
       console.log(this.userId)
     }
 
-    //---If pokemons loaded into local storage -> retreive
+    //---If pokemons loaded into session storage -> retreive
     if (sessionStorage.getItem('pokemons') != null) {
       const pokemons: { name: string, url: string }[] | string | null = sessionStorage.getItem('pokemons')
       this.pokemons = pokemons
       this.pokemons = JSON.parse(this.pokemons)
 
+      //---retreive pokemons names
+      //---have list start with placeholder
+      this.pokemons_names.push("Choose a pokemon")
+      for (let pokemon of this.pokemons){
+              this.pokemons_names.push(pokemon.name)
+      }
       //--- extract id's from pokemon url's
       for (let id of this.pokemons) {
          let id2 = (id.url.toString().split('/',7))[6]
          this.pokemonsID.push(id2)
 
       }
-      //--- put all id's in local storage
+      //--- retreive user pokemons
+      this.user_pokemons = JSON.parse(sessionStorage.getItem("user-pokelist") || '{}')
+
+      //--- put all id's in storage
       sessionStorage.setItem("pokemonsID", JSON.stringify(this.pokemonsID))
 
       //--- Generate urls for each avatar image 
@@ -75,10 +85,10 @@ export class CataloguePageComponent implements OnInit {
     this.router.navigateByUrl('/login');
   }
 
-  //---when picking pokemon from dropdown-list display repctive image
+  //---when picking pokemon from dropdown-list display repective image
   onChange(){
     let i = $("select[name='select'] option:selected").index();
-    this.url = this.Avatars[i];
+    this.url = this.Avatars[i-1];
   }
 
   //---when choose button pushed update user pokemon at API and set at sessionstorage 
@@ -87,6 +97,16 @@ export class CataloguePageComponent implements OnInit {
     let i = $("select[name='select'] option:selected").index();
     
     this.catalogueService.userAPIUpdate(this.username,this.userId, this.pokemons[i].name)
+    
+    //---Text appears depending on if you have pokemon or not
+    if (this.user_pokemons?.includes(this.pokemons[i].name)){
+      this.choosen="You have allready collected this pokemon"
+      this.chooseimg='/assets/images/pokeball.png'
+    }else{
+      this.choosen= "you have collected "+this.pokemons[i].name
+      this.chooseimg=''
+    }
+
   }
   
   onNavigate(){

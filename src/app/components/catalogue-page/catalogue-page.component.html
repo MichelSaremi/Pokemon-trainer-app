@@ -1,23 +1,24 @@
-<header class="header">
-  <div class="row">
-    <div class=card>
-      <h1>{{title}}</h1>
+<div class = "main">
+
+      <h1>Pokemon Catalogue</h1>
         
-      <h2>{{username}}</h2>
-      <div>
-        <img [src]="url" height="300px"> <br/>
+      <h2>Trainer {{username}}</h2>
+      <div class="display">
+        <h3>{{choosen}}</h3>
+        <img [src]="chooseimg" height="50px">
+        <img [src]="url" height="150px"> <br/>
         <select class = "options" name="select" (change)="onChange()">
-            <option *ngFor="let pokemon of pokemons; let i = index" >
-              {{pokemon.name}}
+            <option *ngFor="let pokemon of pokemons_names; let i = index" >
+              {{pokemon}}
             </option>
         </select>
       </div>
-      <button id="btn-choose"  (click)="onChooseButton()" class="btnChoose"> Collect pokemon!</button>
-      <button id="btn-login" type="form-control" (click)="onNavigate()" class="btn">Go back to training!</button>
-      <button id="btn-login" type="form-control" (click)="onLogout()" class="btn">Logout</button>   
-    </div>
-  </div>
-</header>
+      <div class = "buttons">
+        <button id="btn-choose"  (click)="onChooseButton()" class="btn"> Collect pokemon!</button>
+        <button id="btn-login" type="form-control" (click)="onNavigate()" class="btn">Go to training page!</button>
+        <button id="btn-login" type="form-control" (click)="onLogout()" class="btn">Logout</button> 
+    </div>  
+</div>
 
 
 

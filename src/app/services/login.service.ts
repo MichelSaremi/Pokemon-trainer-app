@@ -11,12 +11,10 @@ export class LoginService{
   private user: Login[] = [];
   public testUser = {}
 
-  loggedIn = false;
-
   private error: string = "";
 
-  apiURL = "https://noroff-trivia-api.herokuapp.com";
-  apiKEY = "1b23229d-18ca-48ec-bdeb-9c7445384f23";
+  apiURL = 'https://ms-oh-trivia-api.herokuapp.com'
+  apiKey = 'hezgdhzet5jkiuztge67zshhezgdhzet5jkiuztge67zshhezgdhzet5jkiuztge'
   status: string | undefined;
 
   constructor(public readonly http: HttpClient){
@@ -27,40 +25,10 @@ export class LoginService{
   }
 
   public setUserToApi(username:string): Observable<Login[]> {
-    const headers = { 'X-API-Key': this.apiKEY, 'Content-Type': 'application/json' };
+    const headers = { 'X-API-Key': this.apiKey, 'Content-Type': 'application/json' };
     const body = {username: username, pokemon: []};
     let data = this.http.post<Login[]>(`${this.apiURL}/trainers?username=${username}`, JSON.stringify(body), {'headers':headers})
     return data
   }
-
-
-  public deleteSelectedUserPokemon(pokemon:string[], id:string): void {
-    console.log("ok dude")
-    const headers = { 'X-API-Key': this.apiKEY, 'Content-Type': 'application/json' };
-    const body = {pokemon: pokemon};
-
-    this.http.patch<Login[]>(`${this.apiURL}/trainers/${id}`, JSON.stringify(body), {'headers':headers}).subscribe({
-      next: data => {
-        sessionStorage.getItem("pokemons") || '{}'
-        let user = JSON.parse(sessionStorage.getItem('current-user' ) || '{}');
-        user = data
-        sessionStorage.setItem("current-user", JSON.stringify([user]));
-      },
-      error: error => {
-          this.error = error.message;
-          console.error('There was an error!', error);
-      }
-  })
-  }
-
-  public isLoggedIn(){
-      return this.isLoggedIn;
-  }
-
-
-  public getUser(): Login[]{
-    return this.user
-  }
-
 
 }

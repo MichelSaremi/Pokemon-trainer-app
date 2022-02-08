@@ -3,6 +3,7 @@ import { LoginService } from 'src/app/services/login.service';
 import { Router } from '@angular/router';
 import { Login } from 'src/app/models/login.model';
 import { PokeAPIService, Pokemon } from 'src/app/services/pokeapi.service';
+import { CatalogueService } from 'src/app/services/catalogue.service';
 
 
 @Component({
@@ -12,9 +13,7 @@ import { PokeAPIService, Pokemon } from 'src/app/services/pokeapi.service';
 })
 export class LoginPageComponent implements OnInit {
 
-  title: string = "Pokemon Trainer";
   username: string = "";
-  logo: string = '../assets/images/left-poke-ball.png'
 
   @Input() login: Login | undefined;
   @Output() onUserLogin: EventEmitter<Login> = new EventEmitter()
@@ -23,16 +22,18 @@ export class LoginPageComponent implements OnInit {
   public pokemons: Array<Pokemon> = []
 
 
-  constructor(private loginService: LoginService, private pokemonService: PokeAPIService, private router: Router) { }
+  constructor(private loginService: LoginService, private catalogueService: CatalogueService, private pokemonService: PokeAPIService, private router: Router) { }
 
   ngOnInit(): void {
 
+    //---get pokemonlist from API
     this.pokemonService.getListOfPokemonUrls().subscribe(
       (results: Array<Pokemon>) => {
         for (let p of results) {
           this.pokemons.push(p)
         }
 
+        //---put in storage
         if (sessionStorage.getItem('pokemons') == null) {
             sessionStorage.setItem('pokemons', JSON.stringify(this.pokemons));
 
@@ -42,41 +43,14 @@ export class LoginPageComponent implements OnInit {
         }
       }
     )
+    //---if user logged in -> go streight to catalogue page
+    if (localStorage.getItem("current-user") != null) {
+      this.catalogueService.getUserPokeList(this.username)
+      this.router.navigateByUrl('/catalogue');
+    }
   }
 
-  //-- getters for user
-  get user(): Login[] {
-
-    return this.loginService.getUser()
-  }
-
-  getUser(): Login[] {
-    return this.loginService.getUser();
-  }
-
-  onNavigate() {
-    //---search for user
-    //---if none is found add to api
-    this.loginService.queryUser(this.username).subscribe((res: Login[]) => {
-      if (res.length == 0) {
-        this.loginService.setUserToApi(this.username).subscribe((res: Login[]) => {
-          sessionStorage.setItem("current-user", JSON.stringify([res]))
-          console.log("----User set to API-----")
-          this.router.navigateByUrl('/trainer');
-        })
-      }
-      else {
-        //---if found register
-        this.users = res
-        this.username = this.users[0].username
-        sessionStorage.setItem("current-user", JSON.stringify(this.users))
-        console.log("----User query found -----")
-        this.router.navigateByUrl('/trainer');
-      }
-    })
-
-  }
-
+  //---when button is clicked, username is checked
   onSubmit() {
     if (this.username == "") {
       alert("Please enter a trainer name to continue...")
@@ -84,7 +58,30 @@ export class LoginPageComponent implements OnInit {
     }
     else {
       this.onNavigate();
+      }
     }
+  
+
+
+  onNavigate() {
+    //---search for user
+    //---if none is found -> add to api
+    this.loginService.queryUser(this.username).subscribe((res: Login[]) => {
+      if (res.length == 0) {
+        this.loginService.setUserToApi(this.username).subscribe((res: Login[]) => {
+          localStorage.setItem("current-user", JSON.stringify([res]))
+          this.router.navigateByUrl('/catalogue');
+        })
+      }
+      else {
+        //---if found register in local storage
+        this.users = res
+        localStorage.setItem("current-user", JSON.stringify(this.users))
+        this.catalogueService.getUserPokeList(this.username)
+        this.router.navigateByUrl('/catalogue');
+      }
+    })
+
   }
 
 }

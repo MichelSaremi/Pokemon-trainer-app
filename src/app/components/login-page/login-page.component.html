@@ -1,17 +1,13 @@
 
-<header class="header">
-  <div class="row">
-    <div class=card>
-      <h1>{{title}}</h1>
+<div class="main">
+      <h1>Pokemon Trainer</h1>
       <h2>{{username}}</h2>
-      <div class = "cardItemColumn">
+      <div class = "textbutton">
       <form class="form-control" (ngSubmit)= "onSubmit()">
-        <label style="display:inline-block;"> Enter a trainer name</label>
-        <img src='../assets/images/left-poke-ball.png'/>
-        <input type ="text" id = "login-form" name = "username" [(ngModel)] = "username" placeholder ="Ash Ketchum" />
-        <button id="btn-login" type="form-control"  class="btn">Go!</button>
+        <label class="label">Welcome pokemon trainer</label>
+        <input type ="text" id = "login-form" name = "username" [(ngModel)] = "username" placeholder ="Type you name" />
+        <button id="btn-login" type="form-control"  class="btn">Start collecting!</button>
       </form>
       </div>
-    </div>
-  </div>
-</header>
+<footer>By Michel Saremi</footer>
+</div>

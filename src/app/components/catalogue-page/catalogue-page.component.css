@@ -1,182 +1,55 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+.main {
+  background: white url(src\assets\images\pokemon.png) center;
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  min-width: 100%;
+  min-height: 100%;
+  background-repeat: repeat-x;
 }
 
-body {
-  font-family: 'Poppins', sans-serif;
-}
-
-.container {
-  max-width: 500px;
-  margin: 30px auto;
-  overflow: auto;
-  min-height: 300px;
-  border: 1px solid steelblue;
-  padding: 30px;
-  border-radius: 5px;
-}
-
-header {
-  justify-content: space-between;
+.display {
   align-items: center;
   text-align: center;
-  margin-bottom: 20px;
+  margin-top: 150px;
 }
 
-.options {
-  border: 1px solid #e5e5e5;
-  padding: 10px;
+.buttons {
+  align-items: center;
+  text-align: center;
 }
 
-select {
-  font-size: 14px;
-  border: none;
-  width: 50%;
-  background: white;
+h1{
+  background-color: red;
+  color: white;
+  font-family: monospace;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+h2{
+  background-color: white;
+  color: black;
+  font-family: monospace;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+h3{
+  background-color: white;
+  color: black;
+  font-family: monospace;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  width: 300px;
 }
 
 .btn {
-  display: inline-block;
-  background: rgb(233, 14, 14);
+  background: red;
   color: #fff;
-  border: none;
-  padding: 10px 20px;
-  margin: 5px;
-  border-radius: 5px;
+  border-radius: 50px;
   cursor: pointer;
-  text-decoration: none;
   font-size: 15px;
-  font-family: inherit;
-}
-
-.btnChoose {
-  background: rgb(30, 235, 40);
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  margin: 5px;
-  border-radius: 5px;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 15px;
-  font-family: inherit;
-}
-
-.btn:focus {
-  outline: none;
-}
-
-.btn:active {
-  transform: scale(0.98);
-}
-
-.btn-block {
-  display: block;
-  width: 100%;
-}
-
-.task {
-  background: #f4f4f4;
-  margin: 5px;
-  padding: 10px 20px;
-  cursor: pointer;
-}
-
-.task.reminder {
-  border-left: 5px solid green;
-}
-
-.task h3 {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.add-form {
-  margin-bottom: 40px;
-}
-
-.form-control {
-  margin: 20px 0;
-}
-
-.form-control label {
-  display: block;
-}
-
-.form-control input {
-  width: 100%;
-  height: 40px;
-  margin: 5px;
-  padding: 3px 7px;
-  font-size: 17px;
-}
-
-.form-control-check {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.form-control-check label {
-  flex: 1;
-}
-
-.form-control-check input {
-  flex: 2;
-  height: 20px;
-}
-
-footer {
-  margin-top: 30px;
-  text-align: center;
-}
-
-/* Float four columns side by side */
-.column {
-  width: 25%;
-  padding: 0 10px;
-  align-content: center;
-  align-items: center;
-}
-
-/* Remove extra left and right margins*/
-.row {
-  margin: 100px 100px;
-}
-
-/* Clear floats after the columns */
-.row:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-
-/* Responsive columns */
-@media screen and (max-width: 600px) {
-  .column {
-    width: 100%;
-    display: block;
-    margin-bottom: 20px;
-  }
-}
-
-.cardItemColumn {
-  display: inline-block;
-  flex-direction: row;
-  align-items: center;
-  align-content: center;
-}
-/* Style the counter cards */
-.card {
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-  justify-content: space-evenly;
-  padding: 5px;
-  text-align: center;
-  align-items: center;
-  align-content: center;
+  font-family: monospace;
 }
