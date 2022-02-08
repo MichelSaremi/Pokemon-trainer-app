@@ -55,6 +55,7 @@ export class CataloguePageComponent implements OnInit {
       for (let pokemon of this.pokemons){
               this.pokemons_names.push(pokemon.name)
       }
+
       //--- extract id's from pokemon url's
       for (let id of this.pokemons) {
          let id2 = (id.url.toString().split('/',7))[6]
@@ -96,14 +97,14 @@ export class CataloguePageComponent implements OnInit {
     
     let i = $("select[name='select'] option:selected").index();
     
-    this.catalogueService.userAPIUpdate(this.username,this.userId, this.pokemons[i].name)
+    this.catalogueService.userAPIUpdate(this.username,this.userId, this.pokemons[i-1].name)
     
     //---Text appears depending on if you have pokemon or not
-    if (this.user_pokemons?.includes(this.pokemons[i].name)){
+    if (this.user_pokemons?.includes(this.pokemons_names[i-1])){
       this.choosen="You have allready collected this pokemon"
       this.chooseimg='/assets/images/pokeball.png'
     }else{
-      this.choosen= "you have collected "+this.pokemons[i].name
+      this.choosen= "you have collected "+this.pokemons[i-1].name
       this.chooseimg=''
     }
 
@@ -112,4 +113,10 @@ export class CataloguePageComponent implements OnInit {
   onNavigate(){
     this.router.navigateByUrl('/trainer');
   }
+
+  reloadComponent() {
+    this.router.routeReuseStrategy.shouldReuseRoute = () => false;
+    this.router.onSameUrlNavigation = 'reload';
+    this.router.navigate(['/catalogue']);
+}
 }//npm i --save-dev @types/jquery
