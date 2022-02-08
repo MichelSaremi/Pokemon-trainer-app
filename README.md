@@ -15,9 +15,14 @@ Run `ng generate component component-name` to generate a new component. You can 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
 ## Dependensies
+
+install:
+
 npm i jquery --save
 
 npm i @types/jquery -D
+
+then:
 
 import * as $ from 'jquery'
 
